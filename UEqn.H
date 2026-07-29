@@ -16,7 +16,13 @@
 
     if (simple.momentumPredictor())
     {
-        solve(UEqn == -fvc::grad(p));
+        const SolverPerformance<vector> USolverPerf =
+            solve(UEqn == -fvc::grad(p));
+        UResidual = cmptMax(cmptMag(USolverPerf.initialResidual()));
 
         fvOptions.correct(U);
+    }
+    else
+    {
+        UResidual = 0.0;
     }

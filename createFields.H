@@ -19,7 +19,8 @@ dimensionedScalar nu
 
 Info<< "Reading diffusion coeff\n" << endl;
 
-dimensionedScalar D("D", dimViscosity, transportProperties);
+dimensionedScalar Dx("Dx", dimViscosity, transportProperties);
+dimensionedScalar Dy("Dy", dimViscosity, transportProperties);
 
 Info<< "Reading reaction rate\n" << endl;
 dimensionedScalar k

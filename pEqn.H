@@ -20,6 +20,8 @@
     constrainPressure(p, U, phiHbyA, rAtU());
 
     // Non-orthogonal pressure corrector loop
+    pResidual = GREAT;
+
     while (simple.correctNonOrthogonal())
     {
         fvScalarMatrix pEqn
@@ -29,10 +31,11 @@
 
         pEqn.setReference(pRefCell, pRefValue);
 
-        pEqn.solve();
+        const SolverPerformance<scalar> pSolverPerf = pEqn.solve();
 
         if (simple.finalNonOrthogonalIter())
         {
+            pResidual = pSolverPerf.initialResidual();
             phi = phiHbyA - pEqn.flux();
         }
     }

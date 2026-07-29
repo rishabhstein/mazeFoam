@@ -7,7 +7,7 @@ while (simple.correctNonOrthogonal())
     (
         fvm::ddt(Cx)
     + Pe*fvm::div(phi, Cx)
-    - fvm::laplacian(D, Cx)
+    - fvm::laplacian(Dx, Cx)
         ==
         R
     );
@@ -19,7 +19,7 @@ while (simple.correctNonOrthogonal())
     (
         fvm::ddt(Cy)
     + Pe*fvm::div(phi, Cy)
-    - fvm::laplacian(D, Cy)
+    - fvm::laplacian(Dy, Cy)
         ==
         -R
     );

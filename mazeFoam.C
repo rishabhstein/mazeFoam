@@ -93,25 +93,15 @@ int main(int argc, char *argv[])
 
     Info<< "\nStarting time loop for velocity\n" << endl;
 
-    bool solveFlow = true; //need to be read from case files
+    //bool solveFlow = true; //need to be read from case files
+    const Switch solveFlow(transportProperties.lookupOrDefault<Switch>("solveFlow", true));
+
     if (solveFlow)
     {
-        int counter = 0;
-        int nCycles = 100;
-        while (counter < nCycles)
-        {
-            counter++;
-            Info<< "Cycle = " << counter << nl << endl;
-
-            // --- Pressure-velocity SIMPLE corrector
-            {
-                #include "UEqn.H"
-                #include "pEqn.H"
-            }
-
-        
-        }
-        Info<< "\nWriting converged flow field\n" << endl;
+        #include "solveU.H"
+    
+	    // Reset time
+    	runTime.setTime(0, 0);
     }
 
     else
@@ -126,15 +116,15 @@ int main(int argc, char *argv[])
     Info<< "\nReloading scalar initial conditions\n" << endl;
     
     // Reset time
-    runTime.setTime(0, 0);
+    //runTime.setTime(0, 0);
 
     Cx.correctBoundaryConditions();
     Cy.correctBoundaryConditions();
     
     Info<< "\nCalculating scalar transport\n" << endl;
 
-    #include "CourantNo.H" 
- 
+    #include "CourantNo.H"
+
     while (runTime.loop())
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;
