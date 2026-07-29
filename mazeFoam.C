@@ -125,13 +125,28 @@ int main(int argc, char *argv[])
 
     #include "CourantNo.H"
 
+    #include "createSteadyStateControls.H"
+
     while (runTime.loop())
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
         #include "solveC.H"
+        #include "checkSteadyState.H"
 
-        runTime.write();
+        if (scalarConverged)
+        {
+            Info<< "Scalar transport reached steady state at time "
+                << runTime.timeName() << ", stopping the time loop"
+                << nl << endl;
+
+            // Writes the current fields and ends the run
+            runTime.writeAndEnd();
+        }
+        else
+        {
+            runTime.write();
+        }
     }
 
     Info<< "End\n" << endl;
